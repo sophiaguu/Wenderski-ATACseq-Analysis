@@ -14,12 +14,12 @@ To download a text file of SRR files, use the Run Select function. Navigate to t
 
 ### Make a directory for the experiment in your home directory
 
-Code: cd ~/ && mkdir Wenderski_ATACseq
+``` cd ~/ && mkdir Wenderski_ATACseq ```
 
 Make a copy of the SRR_Acc.List.txt file in your home directory.
 
-Code: cd ~/Wenderski_ATACseq
-nano SRR_Acc_List.txt
+``` cd ~/Wenderski_ATACseq ```
+``` nano SRR_Acc_List.txt ```
 
 ### Run the SRRpull.sh script
 
@@ -31,17 +31,17 @@ We added --split to fastq-dump command to get R1 and R2 fastq for each SRR entry
 
 Make a SRRpull.sh script in the experiment directory and run the script as sbatch submission to Alder.
 
-Code: sbatch SRRpull.sh
+``` sbatch SRRpull.sh ```
 
 Check to see if the script is running.
 
-Code: squeue
+``` squeue ```
 
 Can also check to see if SRAfetch is running properly by checking the contents of the experiment directory to see if a SRAfetch.out has been generated.
 
-Code: less SRAfetch.out (press q to quit)
+``` less SRAfetch.out ```
 
-This can also be used to monitor the progress of SRAfetch.
+Press q to quit an output log. Output logs are also be used to monitor the progress of SRAfetch.
 
 Once the script has finished running, make sure to check all the SRA files have been successfully copied over.
 
@@ -57,9 +57,9 @@ This paper sequenced the RNA library for a given sample on 2 separate sequencing
 
 To do so, run the following script. The new fastq files are stored in a new directory - combined_fastqc under the first occurance of SRA file name for a given sample. For instance, SRR11313882 & SRR11313883 are combined together. The new fastq files will be stored under SRR11313882.
 
-Code: sbatch combine_fastqc.sh
+``` sbatch combine_fastqc.sh ```
 
 This script runs the following 3 steps:
 
-Code: sbatch FastQCandTrim.sh
+``` sbatch FastQCandTrim.sh ```
 
