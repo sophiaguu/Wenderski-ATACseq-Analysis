@@ -14,7 +14,7 @@ To download a text file of SRR files, use the Run Select function. Navigate to t
 
 ### Make a directory for the experiment in your home directory
 
-``` cd ~/ && mkdir Wenderski_ATACseq ```
+```cd ~/ && mkdir Wenderski_ATACseq```
 
 Make a copy of the SRR_Acc.List.txt file in your home directory.
 
