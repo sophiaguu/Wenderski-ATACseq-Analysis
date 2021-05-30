@@ -94,3 +94,29 @@ To check the contents of the file:
 # Step 5: Repeat QC on post trim files
 
 Repeat the QC on the post trim files and compare the output to the pretrim.
+
+# Step 6: QC of the Fastq Files: Contamination Screening
+
+FastQ Screen is a simple application which allows you to search a large sequence dataset against a panel of different genomes to determine from where the sequences in your data originate. The program generates both text and graphical output to inform you what proportion of your library was able to map, either uniquely or to more than one location, against each of your specified reference genomes. The user should therefore be able to identify a clean sequencing experiment in which the overwhelming majority of reads are probably derived from a single genomic origin.
+
+## setup of the Fastq_screen indexes (bowtie2)
+
+http://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/_build/html/index.html#requirements-summary
+
+This was already done for you, but in case you need to make changes this is how it was setup.
+
+Bowtie2 index files were downloaded to /alder/data/cbh/ciernia-data/pipeline-tools/FastQ-Screen-0.14.1/FastQ_Screen_Genomes with the command run from inside /alder/data/cbh/ciernia-data/pipeline-tools/
+
+``` fastq_screen --get_genomes ```
+
+The fastq_screen.conf file is then copied from the FastQ_Screen_Genomes folder to /alder/data/cbh/ciernia-data/pipeline-tools/FastQ-Screen-0.14.1
+
+We then need to edit the fastq_screen.conf file using nano to tell the program where to find bowtie2. Uncomment the BOWTIE2 path line so that it says:
+
+BOWTIE2 /alder/data/cbh/ciernia-data/pipeline-tools/bowtie2-2.4.1-linux-x86_64/bowtie2
+
+From your experiment directory run the script to check your trimmed fastq files
+
+``` sbatch Fastqscreen.sh ```
+
+The output is found in output/FastqScreen_multiqc_report.html
