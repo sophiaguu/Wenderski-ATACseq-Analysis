@@ -63,3 +63,34 @@ This script runs the following 3 steps:
 
 ``` sbatch FastQCandTrim.sh ```
 
+# Step 3: QC of the Fastq Files
+
+We need to check the quality of the fastq files both before and after trimming. We use FastQC from https://www.bioinformatics.babraham.ac.uk/projects/fastqc/ Look at their tutorials to interpret the output files
+
+The pretrim_fastqc.sh script makes an output file and a subfolder for pretrim .html files (one for each fastq file). We have to check both the foreward (R1) and reverse (R2) reads.
+
+The script loops through each fastq and generates a quality resport for each fastq in the /alder/data/cbh/ciernia-data/HDAC1_2_ChIPseq/SRA/ folder.
+
+It then combines the reports into one easy to read output using multiqc: PretrimFastQC_multiqc_report.html PreTrimFastqc.out output log is also generated.
+
+Check the PretrimFastQC_multiqc_report.html to help inform your trimming
+
+# Step 4: Trimming fastq files
+
+We need to remove adapters and poor quality reads before aligning.
+Trimmomatic will look for seed matches of 16 bases with 2 mismatches allowed and will then extend and clip if a score of 30 for PE or 10 for SE is reached (~17 base match)
+The minimum adapter length is 8 bases
+T = keeps both reads even if only one passes criteria
+Trims low quality bases at leading and trailing end if quality score < 15
+Sliding window: scans in a 4 base window, cuts when the average quality drops below 15
+Log outputs number of input reads, trimmed, and surviving reads in trim_log_samplename
+
+It uses the file TruSeq3-PE.fa (comes with Trimmomatic download).
+The program needs to know where this is stored. We set the path to thies file in the bash_profile with $ADAPTERS
+To check the contents of the file:
+
+``` less $ADAPTERS/TruSeq3-PE.fa ```
+
+# Step 5: Repeat QC on post trim files
+
+Repeat the QC on the post trim files and compare the output to the pretrim.
