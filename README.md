@@ -132,3 +132,32 @@ Run the script to align. This takes significant time and memory. Output logs are
 ``` sbatch Bowtie2alignment.sh ```
 
 Check the multiqc output to look at alignment rates: bowtie2_multiqc_report.html
+
+# Step 8: Filter aligned files
+
+We need to convert sam files to bam and filter to remove PCR duplicates, remove unmapped reads and secondary alignments (multi-mappers), and remove unpaired reads
+We use samtools to convert sam to bam and then samtools fixmate to remove unmapped reads and 2ndary alignments.
+We then remove PCR duplicates using -F 0x400 and -f 0x2 to keep only propperly paired reads
+We then indext the reads and collect additional QC metrics using picard tools and samtools flagstat
+QC meterics are then collected into one report using multiqc.
+
+Run the script:
+
+``` sbatch SamtoolsFiltering.sh ```
+
+Check the multiqc: sam_multiqc_report.html
+
+# Step 9: Shift for Tn5 cut sites: https://github.com/TheJacksonLaboratory/ATAC-seq
+
+From Asli Uyar, PhD "The bam file needs to be adjusted because Tn5 has a 9bp binding site, and it binds in the middle.
+Functionally that means that the DNA had to be accessible at least 4.5bp on either site of the insertion.
+   
+Example of how a BAM file will be altered
+
+Original: HWI-ST374:226:C24HPACXX:4:2214:15928:96004 99 chrI 427 255 101M = 479 153 HWI-ST374:226:C24HPACXX:4:2214:15928:96004 147 chrI 479 255 101M = 427 -153
+
+Altered: HWI-ST374:226:C24HPACXX:4:2214:15928:96004 99 chrI 431 255 97M = 474 144 HWI-ST374:226:C24HPACXX:4:2214:15928:96004 147 chrI 479 255 96M = 431 -144
+
+``` sbatch Tn5Shift.sh ```
+
+This calls to: ATAC_BAM_shifter_gappedAlign.pl makes sample.shift.bam out put and .bai file
