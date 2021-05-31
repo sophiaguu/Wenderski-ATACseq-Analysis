@@ -120,3 +120,15 @@ From your experiment directory run the script to check your trimmed fastq files
 ``` sbatch Fastqscreen.sh ```
 
 The output is found in output/FastqScreen_multiqc_report.html
+
+# Step 7: Align to mm10 genome using Bowtie2
+
+We now will align the trimmed fastq files to the mm10 genome using bowtie2. Bowtie2 needs to know where the index files are located. We specified this in our bash_profile. Check the location:
+
+``` ls $BT2_MM10 ```
+
+Run the script to align. This takes significant time and memory. Output logs are placed in output/bowtielogs
+
+``` sbatch Bowtie2alignment.sh ```
+
+Check the multiqc output to look at alignment rates: bowtie2_multiqc_report.html
