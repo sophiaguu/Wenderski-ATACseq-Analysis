@@ -178,3 +178,14 @@ Plot the correlation between samples as either a PCA or a Correlation Plot.
 2. Check Fragment Sizes (bamPEFragmentSize) For paired-end samples, we often additionally check whether the fragment sizes are more or less what we would expected based on the library preparation.
 
 `` sbatch DeepToolsQC.sh ``
+
+# Step 11: Peak Calling with HOMER
+
+1. Make tag directories for each sample and for the pool of all samples in the same condition (ie. all 12hr LPS replicates).
+
+2. Use the pooled the target tag directories and perform an initial peak identification using findPeaks. Pooling the experiments is generally more sensitive than trying to merge the individual peak files coming from each experiment. Use parameters from Gosselin et al 2017: findPeaks -style factor -size 200 -minDist 200 -tbp 4 where -tbp is the number of replicates in the pooled tag directory.
+
+3. Also make bed files for the pooled peaks using a modified pos2bedmod.pl that keeps peak information.
+
+``` sbatch HomerPeaks.sh ```
+
