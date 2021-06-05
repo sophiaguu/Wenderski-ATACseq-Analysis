@@ -161,3 +161,20 @@ Altered: HWI-ST374:226:C24HPACXX:4:2214:15928:96004 99 chrI 431 255 97M = 474 14
 ``` sbatch Tn5Shift.sh ```
 
 This calls to: ATAC_BAM_shifter_gappedAlign.pl makes sample.shift.bam out put and .bai file
+
+# Step 10: QC with Deeptools
+
+https://deeptools.readthedocs.io/en/develop/content/example_usage.html#how-we-use-deeptools-for-chip-seq-analyses
+
+1. Correlation between BAM files using multiBamSummary and plotCorrelation Together, these two modules perform a very basic test to see whether the sequenced and aligned reads meet your expectations. We use this check to assess reproducibility - either between replicates and/or between different experiments that might have used the same antibody or the same cell type, etc. For instance, replicates should correlate better than differently treated samples.
+The coverage calculation is done for consecutive bins of equal size (10 kilobases by default). This mode is useful to assess the genome-wide similarity of BAM files. The bin size and distance between bins can be adjusted.
+
+Exclude black list regions: A BED or GTF file containing regions that should be excluded from all analyses. Currently this works by rejecting genomic chunks that happen to overlap an entry. Consequently, for BAM files, if a read partially overlaps a blacklisted region or a fragment spans over it, then the read/fragment might still be considered. Please note that you should adjust the effective genome size, if relevant.
+
+For PE reads are centered with respect to the fragment length. For paired-end data, the read is centered at the fragment length defined by the two ends of the fragment. For single-end data, the given fragment length is used. This option is useful to get a sharper signal around enriched regions.
+
+Plot the correlation between samples as either a PCA or a Correlation Plot.
+
+2. Check Fragment Sizes (bamPEFragmentSize) For paired-end samples, we often additionally check whether the fragment sizes are more or less what we would expected based on the library preparation.
+
+`` sbatch DeepToolsQC.sh ``
