@@ -59,6 +59,24 @@ To do so, run the following script. The new fastq files are stored in a new dire
 
 ``` sbatch combine_fastqc.sh ```
 
+We have combined all the fastq files from the same sample into one fastq file, so our SRR_Acc_List.txt also needs to be updated for downstream scripts that references the SRR_Acc_List.txt file.
+
+We will first ensure SRR_Acc_List.txt is sorted and make a copy of it.
+
+``` sort -o SRR_Acc_List.txt SRR_Acc_List.txt ```
+``` cp SRR_Acc_List.txt SRR_Acc_List_2.txt ```
+
+Then we'll use the ex (text editor) command to match every line inside the file and deleting the next line.
+
+`` ex SRR_Acc_List_2.txt <<\EX
+:g/$/+d
+:wq!
+EX ``
+
+Make sure to double check the txt file to ensure it contains every other SRA file name.
+
+`` cat SRR_Acc_List_2.txt ``
+
 This script runs the following 3 steps:
 
 ``` sbatch FastQCandTrim.sh ```
