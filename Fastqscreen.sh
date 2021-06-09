@@ -13,7 +13,7 @@
 #######################################################################################
 mkdir -p output/fastq_screen
 
-for sample in `cat SRR_Acc_List.txt`
+for sample in `cat SRR_Acc_List_2.txt`
 do
 
 echo ${sample} "starting fastq screen"
