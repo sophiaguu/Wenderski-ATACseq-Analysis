@@ -32,7 +32,7 @@ module load samtools/1.4
 module load jre/1.8.0_121 #this loads Java 1.8 working environment
 module load R/3.6.1 #picard needs this
 
-for sample in `cat SRR_Acc_List.txt`
+for sample in `cat SRR_Acc_List_2.txt`
 do
 
 echo ${sample} "starting shifting"
