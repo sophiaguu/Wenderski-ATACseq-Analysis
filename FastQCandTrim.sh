@@ -11,7 +11,7 @@
 #######################################################################################
 mkdir -p output/pretrim
 
-for sample in `cat SRR_Acc_List.txt`
+for sample in `cat SRR_Acc_List_2.txt`
 do
 
 echo ${sample} "starting"
@@ -40,7 +40,7 @@ rmined* --interactive
 mkdir trimmed
 mkdir -p output/trimlogs
 
-for sample in `cat SRR_Acc_List.txt`
+for sample in `cat SRR_Acc_List_2.txt`
 do
 
 echo ${sample} "starting trim"
@@ -71,7 +71,7 @@ multiqc output/trimlogs/ --filename output/trimlogs_multiqc_report.html --ignore
 #######################################################################################
 mkdir -p output/posttrim
 
-for sample in `cat SRR_Acc_List.txt`
+for sample in `cat SRR_Acc_List_2.txt`
 do
 
 echo ${sample} "starting fastqc"
