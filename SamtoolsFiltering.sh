@@ -15,7 +15,7 @@ module load R/3.6.1 #picard needs this
 
 mkdir -p output/sam/
 
-for sample in `cat SRR_Acc_List.txt`
+for sample in `cat SRR_Acc_List_2.txt`
 do
 
 echo ${sample} "starting filtering"
