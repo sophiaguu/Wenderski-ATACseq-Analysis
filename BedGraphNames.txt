@@ -1,0 +1,12 @@
+Baseline_ATAC_Repl1
+Baseline_ATAC_Repl2
+Baseline_ATAC_Repl3
+Baseline_ATAC_Repl4
+Baseline_ATAC_Repl5
+Knockout_ATAC_Repl1
+Knockout_ATAC_Repl2
+Knockout_ATAC_Repl3
+Knockout_ATAC_Repl4
+Knockout_ATAC_Repl5
+Knockout_ATAC_Repl6
+Knockout_ATAC_Repl7
