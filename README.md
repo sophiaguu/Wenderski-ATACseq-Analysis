@@ -207,3 +207,12 @@ Plot the correlation between samples as either a PCA or a Correlation Plot.
 
 ``` sbatch HomerPeaks.sh ```
 
+# Step 12: Make UCSC genome browser track files
+
+Make bedgraph and Bigwig files for each sample replicate and the pooled tag directories at a resolution of 10bp bins using makeUCSCfile. Normalized to the 1e7 total tags and use the given fragment length. Then we need to make several corrections to the chromosome names. We aligned to ensembl whic does not have "chr" as part of the chromosome name. UCSC requires this to load into the browser. We manually add this and fix the mitochondrial chromosome from M to MT:
+
+sed -i "1n; s/^/chr/" UCSCbrowsertracks/${sample}.bedGraph sed -i "1n; s/MT/M/g" UCSCbrowsertracks/${sample}.bedGraph
+
+After fixing the names, we sort, remove the track line and fix extensions beyond chromosomes using bedclip. Then we convert from bedGraph to bigwig. Bigwig files can be loaded onto a webserver to build a track hub for viewing in UCSC. Zipped bedGraph files (if they are small enough) can be loaded directly into UCSC through the online portal.
+
+``` sbatch UCSCBrowserHOMER.sh ```
