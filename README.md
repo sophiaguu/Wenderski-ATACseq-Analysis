@@ -216,3 +216,55 @@ sed -i "1n; s/^/chr/" UCSCbrowsertracks/${sample}.bedGraph sed -i "1n; s/MT/M/g"
 After fixing the names, we sort, remove the track line and fix extensions beyond chromosomes using bedclip. Then we convert from bedGraph to bigwig. Bigwig files can be loaded onto a webserver to build a track hub for viewing in UCSC. Zipped bedGraph files (if they are small enough) can be loaded directly into UCSC through the online portal.
 
 ``` sbatch UCSCBrowserHOMER.sh ```
+
+# Step 13: QC all peaks with Deeptools
+
+Use deeptools to make plots over the called peask for each sample and condition. +/- 500 bp surrounding each peak.
+
+``` sbatch Allpeaks_Deeptool_Plots.sh ```
+
+# Step 14: Differential Peak Analysis with HOMER
+
+1. Merge peaks together for the comparison of interest using mergePeaks
+
+2. Quantify the reads in the mergePeaks file across each of the individual sample tag directories using annotatePeaks.pl. http://homer.ucsd.edu/homer/ngs/diffExpression.html. This generate raw counts file from each tag directory for each sample for the merged peaks.
+
+3. Call getDiffExpression.pl and ultimately passes these values to the R/Bioconductor package DESeq2 to calculate enrichment values for each peak, returning only those peaks that pass a given fold enrichment (default: 2-fold) and FDR cutoff (default 5%).
+
+IMPORTANT: Make sure you remember the order that your experiments and replicates where entered in for generating these commands. Because experiment names can be cryptic, you will need to specify which experiments are which when running getDiffExpression.pl to assign replicates and conditions.
+
+Provide sample group annotation for each experiment with an argument on the command line (in the same order found in the file, i.e. the same order given to the annotatePeaks.pl command when preparing the raw count file).
+
+One key difference in the use of DESeq2 for finding significant peaks is that HOMER will force the normalization factors for each experiment to reflect the total number of mapped tags per experiment during the DESeq2 calculation. By default, DESeq2 (and DESeq/edgeR) will normalize the read counts in the input table to be the same (i.e. think quantile normalization), but in this case "input" or IgG experiments would likely have significantly less reads in putative peaks than the target experiments, so it is important to adjust the normalization factors. Unfortunately, edgeR does not support this adjustment so it is not possible to use edgeR to calculate the statistics for differential peak finding (vs. input).
+
+By default it looks for peaks that have 4-fold more tags (sequencing-depth independent) and a cumulative Poisson p-value less than 0.0001 (sequencing-depth dependent). These parameters are adjustable with ("-F <#>", and "-P <#>"). By specifying "-same", peaks that are similar between the two tag directories will be returned instead of differential peaks. One caveat is that it is a good idea to set the size of the region used to search for reads to be larger than the actual peaks (i.e. +100 bp relative to the peak size) to avoid problems that arise from experiments with different fragment lengths, etc.
+
+http://homer.ucsd.edu/homer/ngs/mergePeaks.html
+
+NOTE about normalization for this step: The read counts are normalized to the total number of reads found in their tag directories (no fancy normalization is assumed for this analysis). However, to be conservative with the Poisson calculations, the experiment with the largest number of reads is normalized such that it contains the same number of reads as the smaller experiment. As a result, only one of the directories - either the target directory ("Total Tags", column 8) or the background directory ("Background Tags", Column 9), will have integer counts and the other is likely to contain fractional counts.
+
+-simpleNorm (Normalize to experiment totals, i.e. basic normalization)
+
+``` sbatch DifferentialPeaks.sh ```
+
+# Step 15: Make Deeplots heatmap and profile over TSS and DE peaks
+
+These plots use Deeptools computeMatrix, plotHeatmap and plotProfile to plot the average signal over specific regions specified in a bed file. We will be using the read-depth normalized bigwig files generated from running the UCSCBrowserHOMER.sh script.
+
+# TSS Heatmap Plots
+
+Plot Normalized signal over the TSS with computeMatrix, plotHeatmap and plotProfile. You first need the coordinates of all the mm10 genes in bed format. To get these go to the UCSC genome browser and select mm10. Go to the table browser and download a bed file for the gene body. Load the bed file into your experiment folder on Alder or use the one already available: mm10.refseq.bed Plot 1kb upstream and 500bp downstream of each TSS in mm10. Plots profiles (mean) and heatmap (each row is a gene in teh mm10.refseq.bed). https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
+
+``` sbatch Geneplots_deeptools.sh ```
+
+# DE Peaks Heatmap Plots
+
+Plot Normalized signal over each set of DE peaks with computeMatrix, plotHeatmap and plotProfile. You first need to convert the _diffpeaksOutput.txt files from the getDiffExpression.pl script to bed files. This requires making some formtting changes, sorting and filtering for significant peaks using unix commands. A detailed description of each step is found within the script. This script produces an output bed file for regions that pass an FDR<0.05.
+
+IMPORTANT: see notes in script for how to find and set the last column in the DE peaks output file in order to filter correctly on the FDR adjusted pvalue.
+
+``` sbatch Convert_DEpeaks_to_bed.sh ```
+
+Plot 500bp upstream and 500bp downstream of each DE region. Plots profiles (mean) and heatmap (each row is a differential region). https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
+
+``` sbatch DEpeaks_Deeptool_Plots.sh ```
