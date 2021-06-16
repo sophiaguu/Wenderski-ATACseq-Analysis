@@ -20,8 +20,10 @@ cd ~/ && mkdir Wenderski_ATACseq
 
 Make a copy of the SRR_Acc.List.txt file in your home directory.
 
-``` cd ~/Wenderski_ATACseq ```
-``` nano SRR_Acc_List.txt ```
+``` 
+cd ~/Wenderski_ATACseq
+nano SRR_Acc_List.txt 
+```
 
 ### Run the SRRpull.sh script
 
@@ -33,15 +35,21 @@ We added --split to fastq-dump command to get R1 and R2 fastq for each SRR entry
 
 Make a SRRpull.sh script in the experiment directory and run the script as sbatch submission to Alder.
 
-``` sbatch SRRpull.sh ```
+``` 
+sbatch SRRpull.sh 
+```
 
 Check to see if the script is running.
 
-``` squeue ```
+``` 
+squeue 
+```
 
 Can also check to see if SRAfetch is running properly by checking the contents of the experiment directory to see if a SRAfetch.out has been generated.
 
-``` less SRAfetch.out ```
+``` 
+less SRAfetch.out 
+```
 
 Press q to quit an output log. Output logs are also be used to monitor the progress of SRAfetch.
 
@@ -59,29 +67,39 @@ This paper sequenced the RNA library for a given sample on 2 separate sequencing
 
 To do so, run the following script. The new fastq files are stored in a new directory - combined_fastqc under the first occurance of SRA file name for a given sample. For instance, SRR11313882 & SRR11313883 are combined together. The new fastq files will be stored under SRR11313882.
 
-``` sbatch combine_fastqc.sh ```
+``` 
+sbatch combine_fastqc.sh 
+```
 
 We have combined all the fastq files from the same sample into one fastq file, so our SRR_Acc_List.txt also needs to be updated for downstream scripts that references the SRR_Acc_List.txt file.
 
 We will first ensure SRR_Acc_List.txt is sorted and make a copy of it.
 
-``` sort -o SRR_Acc_List.txt SRR_Acc_List.txt ```
-``` cp SRR_Acc_List.txt SRR_Acc_List_2.txt ```
+``` 
+sort -o SRR_Acc_List.txt SRR_Acc_List.txt 
+cp SRR_Acc_List.txt SRR_Acc_List_2.txt 
+```
 
 Then we'll use the ex (text editor) command to match every line inside the file and deleting the next line.
 
-`` ex SRR_Acc_List_2.txt <<\EX
+``` 
+ex SRR_Acc_List_2.txt <<\EX
 :g/$/+d
 :wq!
-EX ``
+EX 
+```
 
 Make sure to double check the txt file to ensure it contains every other SRA file name.
 
-`` cat SRR_Acc_List_2.txt ``
+```
+cat SRR_Acc_List_2.txt 
+```
 
 This script runs the following 3 steps:
 
-``` sbatch FastQCandTrim.sh ```
+``` 
+sbatch FastQCandTrim.sh 
+```
 
 # Step 3: QC of the Fastq Files
 
@@ -109,7 +127,9 @@ It uses the file TruSeq3-PE.fa (comes with Trimmomatic download).
 The program needs to know where this is stored. We set the path to thies file in the bash_profile with $ADAPTERS
 To check the contents of the file:
 
-``` less $ADAPTERS/TruSeq3-PE.fa ```
+``` 
+less $ADAPTERS/TruSeq3-PE.fa 
+```
 
 # Step 5: Repeat QC on post trim files
 
@@ -127,7 +147,9 @@ This was already done for you, but in case you need to make changes this is how 
 
 Bowtie2 index files were downloaded to /alder/data/cbh/ciernia-data/pipeline-tools/FastQ-Screen-0.14.1/FastQ_Screen_Genomes with the command run from inside /alder/data/cbh/ciernia-data/pipeline-tools/
 
-``` fastq_screen --get_genomes ```
+``` 
+fastq_screen --get_genomes 
+```
 
 The fastq_screen.conf file is then copied from the FastQ_Screen_Genomes folder to /alder/data/cbh/ciernia-data/pipeline-tools/FastQ-Screen-0.14.1
 
@@ -137,7 +159,9 @@ BOWTIE2 /alder/data/cbh/ciernia-data/pipeline-tools/bowtie2-2.4.1-linux-x86_64/b
 
 From your experiment directory run the script to check your trimmed fastq files
 
-``` sbatch Fastqscreen.sh ```
+``` 
+sbatch Fastqscreen.sh 
+```
 
 The output is found in output/FastqScreen_multiqc_report.html
 
@@ -145,11 +169,15 @@ The output is found in output/FastqScreen_multiqc_report.html
 
 We now will align the trimmed fastq files to the mm10 genome using bowtie2. Bowtie2 needs to know where the index files are located. We specified this in our bash_profile. Check the location:
 
-``` ls $BT2_MM10 ```
+``` 
+ls $BT2_MM10 
+```
 
 Run the script to align. This takes significant time and memory. Output logs are placed in output/bowtielogs
 
-``` sbatch Bowtie2alignment.sh ```
+``` 
+sbatch Bowtie2alignment.sh 
+```
 
 Check the multiqc output to look at alignment rates: bowtie2_multiqc_report.html
 
@@ -163,7 +191,9 @@ QC meterics are then collected into one report using multiqc.
 
 Run the script:
 
-``` sbatch SamtoolsFiltering.sh ```
+``` 
+sbatch SamtoolsFiltering.sh 
+```
 
 Check the multiqc: sam_multiqc_report.html
 
@@ -178,7 +208,9 @@ Original: HWI-ST374:226:C24HPACXX:4:2214:15928:96004 99 chrI 427 255 101M = 479 
 
 Altered: HWI-ST374:226:C24HPACXX:4:2214:15928:96004 99 chrI 431 255 97M = 474 144 HWI-ST374:226:C24HPACXX:4:2214:15928:96004 147 chrI 479 255 96M = 431 -144
 
-``` sbatch Tn5Shift.sh ```
+``` 
+sbatch Tn5Shift.sh 
+```
 
 This calls to: ATAC_BAM_shifter_gappedAlign.pl makes sample.shift.bam out put and .bai file
 
@@ -197,7 +229,9 @@ Plot the correlation between samples as either a PCA or a Correlation Plot.
 
 2. Check Fragment Sizes (bamPEFragmentSize) For paired-end samples, we often additionally check whether the fragment sizes are more or less what we would expected based on the library preparation.
 
-`` sbatch DeepToolsQC.sh ``
+``` 
+sbatch DeepToolsQC.sh 
+```
 
 # Step 11: Peak Calling with HOMER
 
@@ -207,7 +241,9 @@ Plot the correlation between samples as either a PCA or a Correlation Plot.
 
 3. Also make bed files for the pooled peaks using a modified pos2bedmod.pl that keeps peak information.
 
-``` sbatch HomerPeaks.sh ```
+``` 
+sbatch HomerPeaks.sh 
+```
 
 # Step 12: Make UCSC genome browser track files
 
@@ -217,13 +253,17 @@ sed -i "1n; s/^/chr/" UCSCbrowsertracks/${sample}.bedGraph sed -i "1n; s/MT/M/g"
 
 After fixing the names, we sort, remove the track line and fix extensions beyond chromosomes using bedclip. Then we convert from bedGraph to bigwig. Bigwig files can be loaded onto a webserver to build a track hub for viewing in UCSC. Zipped bedGraph files (if they are small enough) can be loaded directly into UCSC through the online portal.
 
-``` sbatch UCSCBrowserHOMER.sh ```
+``` 
+sbatch UCSCBrowserHOMER.sh 
+```
 
 # Step 13: QC all peaks with Deeptools
 
 Use deeptools to make plots over the called peask for each sample and condition. +/- 500 bp surrounding each peak.
 
-``` sbatch Allpeaks_Deeptool_Plots.sh ```
+``` 
+sbatch Allpeaks_Deeptool_Plots.sh 
+```
 
 # Step 14: Differential Peak Analysis with HOMER
 
@@ -247,7 +287,9 @@ NOTE about normalization for this step: The read counts are normalized to the to
 
 -simpleNorm (Normalize to experiment totals, i.e. basic normalization)
 
-``` sbatch DifferentialPeaks.sh ```
+``` 
+sbatch DifferentialPeaks.sh 
+```
 
 # Step 15: Make Deeplots heatmap and profile over TSS and DE peaks
 
@@ -257,7 +299,9 @@ These plots use Deeptools computeMatrix, plotHeatmap and plotProfile to plot the
 
 Plot Normalized signal over the TSS with computeMatrix, plotHeatmap and plotProfile. You first need the coordinates of all the mm10 genes in bed format. To get these go to the UCSC genome browser and select mm10. Go to the table browser and download a bed file for the gene body. Load the bed file into your experiment folder on Alder or use the one already available: mm10.refseq.bed Plot 1kb upstream and 500bp downstream of each TSS in mm10. Plots profiles (mean) and heatmap (each row is a gene in teh mm10.refseq.bed). https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
 
-``` sbatch Geneplots_deeptools.sh ```
+``` 
+sbatch Geneplots_deeptools.sh 
+```
 
 # DE Peaks Heatmap Plots
 
@@ -265,8 +309,52 @@ Plot Normalized signal over each set of DE peaks with computeMatrix, plotHeatmap
 
 IMPORTANT: see notes in script for how to find and set the last column in the DE peaks output file in order to filter correctly on the FDR adjusted pvalue.
 
-``` sbatch Convert_DEpeaks_to_bed.sh ```
+``` 
+sbatch Convert_DEpeaks_to_bed.sh 
+```
 
 Plot 500bp upstream and 500bp downstream of each DE region. Plots profiles (mean) and heatmap (each row is a differential region). https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
 
-``` sbatch DEpeaks_Deeptool_Plots.sh ```
+``` 
+sbatch DEpeaks_Deeptool_Plots.sh 
+```
+
+# Step 16a: Repeat differential analysis on enhancer regions or promoter regions only - Approach 1
+
+## 1. download TSS start sites and add 3kb to either side
+
+Go to mm10 UCSC genome browser > Table Browser: https://genome.ucsc.edu/cgi-bin/hgTables?hgsid=984798937_SZsK0ReMotdHw4voBY99gZp26FqS Select UCSC RefSeq genes Select Bed format ouptufile: mm10.refseq.TSS.bed
+
+#https://www.biostars.org/p/158712/#158719 #take all mm10 genes and add 3kb up and downstream #takes into account strand information upstream=3000
+
+downstream=3000
+
+cat mm10.refseq.bed | awk '{ if ($6 == "+") { print $1,$2-'$upstream', $2+'$downstream', $4, $5, $6,$7,$8,$9,$10,$11,$12 } else if ($6 == "-") { print $1, $3-'$upstream', $3+'$downstream', $4,$5,$6,$7,$8,$9,$10,$11,$12 }}' > mm10.promoter.bed
+
+``` 
+./MakeTSS3kb.sh
+```
+
+## 2. separate DE peak files by those within 3kb of a TSS = promoter vs. those outside of 3kb of a TSS = enhancer
+
+Note: If you don't have bedtools installed: https://bedtools.readthedocs.io/en/latest/content/installation.html
+
+It is currently in the /alder/data/cbh/ciernia-data/pipeline-tools/bedtools2/bin so add this to your profile to access directly as PATH=$PATH:/alder/data/cbh/ciernia-data/pipeline-tools/bedtools2/bin and source the profile
+
+Use bedtools intersect: https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html
+
+```
+sbatch FilterBedFiles.sh
+```
+
+## 3. plot with upset and deeptools
+
+``` 
+sbatch EnhancerPromoterUpsetRplots.sh
+```
+
+Makes heatmaps and profiles over each bed file output from upset plot
+
+```
+sbatch upsetpeaks_Deeptool_Plots.sh
+```
