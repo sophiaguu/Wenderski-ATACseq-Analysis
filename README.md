@@ -257,6 +257,14 @@ After fixing the names, we sort, remove the track line and fix extensions beyond
 sbatch UCSCBrowserHOMER.sh 
 ```
 
+# The bigwig files can be uploaded into UCSC Browser Genome for viewing.
+
+http://genome.ucsc.edu/goldenPath/help/hgTrackHubHelp.html#Hosting
+This allows for actual viewing of the bigwig files. 
+
+http://genome.ucsc.edu/goldenPath/help/bigWig.html
+This is how you can upload your bigwig files. Use a website such as https://de.cyverse.org/ Discovery Environment to upload your bigwig files into a public link on the internet, which can then be uploaded into Custom Tracks on UCSC Browser Genome. 
+
 # Step 13: QC all peaks with Deeptools
 
 Use deeptools to make plots over the called peask for each sample and condition. +/- 500 bp surrounding each peak.
