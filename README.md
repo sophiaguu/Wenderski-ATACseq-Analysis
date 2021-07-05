@@ -1,5 +1,7 @@
 # Wenderski-ATACseq-Analysis
 
+# The output for this entire analysis: https://github.com/sophiaguu/Wenderski-ATACseq-Output
+
 Processing ATAC-seq PE files sourced from the Crabtree Lab: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7211998/.
 
 The ATACseq dataset is downloaded from published PE ATAC-seq files from GEO Accession (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE147056) and processing them for QC, aligning and analysis in Rstudio. The analysis is setup to run on the DMCBH Alder computing cluster using bash scripts.
