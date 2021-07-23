@@ -1,60 +1,10 @@
-Last login: Wed Jul 21 11:57:29 on console
-Sophias-MacBook-Air:~ sophiagu$ ssh sophiagu@alder.arc.ubc.ca
-sophiagu@alder.arc.ubc.ca's password: 
-Last login: Mon Jun 28 15:48:27 2021 from host20-115.vpn.ubc.ca
-#####################################################################
-
-WELCOME TO ALDER
-
-The University of British Columbia
-Djavad Mowafaghian Centre for Brain Health (DMCBH)
-
-#####################################################################
-
-Operated by UBC Advanced Research Computing
-
-Website: https://arc.ubc.ca
-Contact: arc.support@ubc.ca
-
-#####################################################################
-[sophiagu@alder-login02 ~]$ cd Wenderski_ATACseq
-[sophiagu@alder-login02 Wenderski_ATACseq]$ less MakeTSS3kb.sh
-[sophiagu@alder-login02 Wenderski_ATACseq]$ less MakeTSS3.out
-[sophiagu@alder-login02 Wenderski_ATACseq]$ less FilterBedFiles.sh
-[sophiagu@alder-login02 Wenderski_ATACseq]$ less peakfilter.out
-[sophiagu@alder-login02 Wenderski_ATACseq]$ less FilterBedFiles.sh
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-[sophiagu@alder-login02 Wenderski_ATACseq]$ less FilterBedFiles.sh
-
-
-
-
-
-
-
-
-
-
-[sophiagu@alder-login02 Wenderski_ATACseq]$ less peakfilter.out
-[sophiagu@alder-login02 Wenderski_ATACseq]$ less FilterBedFiles.sh
-
+#!/bin/bash
+#
+#SBATCH -c 20
+#SBATCH --mem-per-cpu=4000
+#SBATCH --job-name=peakfilter
+#SBATCH --output=peakfilter.out
+#SBATCH --time=1:00:00
 
 
 # This script performs bedtools intersect to separate out enhancers and promoter from peak files in bed format
