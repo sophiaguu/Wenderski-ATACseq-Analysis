@@ -19,7 +19,7 @@
 PATH=$PATH:/alder/data/cbh/ciernia-data/pipeline-tools/bedtools2/bin
 
 #!/bin/bash
-FILES=/alder/home/sophiagu/shemerATAC/DEpeaks/*.bed
+FILES=/alder/home/sophiagu/Wenderski_ATACseq/DEpeaks/*.bed
 for f in $FILES
 do
 
