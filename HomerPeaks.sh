@@ -84,7 +84,7 @@ mkdir homer_peaks
 #ATAC for knockout ACTL6B -/- samples
 #########################################
 
-/alder/data/cbh/ciernia-data/pipeline-tools/.//bin/findPeaks TagDirectory/Pooltag_ATAC_Knockout -style factor -size 200 -minDist 200 -tbp 4 -o homer_peaks/Homerpeaks_ATAC.12hrLPS.txt
+/alder/data/cbh/ciernia-data/pipeline-tools/.//bin/findPeaks TagDirectory/Pooltag_ATAC_Knockout -style factor -size 200 -minDist 200 -tbp 4 -o homer_peaks/Homerpeaks_ATAC.Knockout.txt
 
 
 #######################################################################################
