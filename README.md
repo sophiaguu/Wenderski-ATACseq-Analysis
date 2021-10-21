@@ -303,6 +303,8 @@ sbatch DifferentialPeaks.sh
 
 # Step 15: Make Deeplots heatmap and profile over TSS and DE peaks
 
+Note: This has not been completed by me, and can be completed by another person. It's important to check what you're running and where you're running from and to. 
+
 These plots use Deeptools computeMatrix, plotHeatmap and plotProfile to plot the average signal over specific regions specified in a bed file. We will be using the read-depth normalized bigwig files generated from running the UCSCBrowserHOMER.sh script.
 
 # TSS Heatmap Plots
